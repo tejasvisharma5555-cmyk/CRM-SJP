@@ -167,7 +167,7 @@ await step("add property with inline NEW contact (direct owner); owner auto = so
   await shot(page, "09-inline-contact");
   await sheet.getByRole("button", { name: "Save", exact: true }).click();
   await page.locator(".row .t1", { hasText: "✓ Jai Bhagwan" }).waitFor();
-  await page.getByRole("button", { name: "House" }).click();
+  await page.getByRole("button", { name: "House", exact: true }).click();
   await page.fill("#p-loc", "Ram Nagar");
   await page.fill("#p-plot", "H.No. 77");
   await page.fill("#p-size", "150");
@@ -249,7 +249,8 @@ await step("properties filters: source, broker, status", async () => {
   const srcTexts = await page.locator(".row .t2").allInnerTexts();
   assert.ok(srcTexts.every((t) => t.includes("Direct owner")), "only direct owner rows");
   await page.goto(`${BASE}/properties`);
-  await page.getByLabel("Broker").selectOption({ label: /Sunil Mittal/ });
+  const sunilVal = await page.getByLabel("Broker").evaluate((sel) => [...sel.options].find((o) => o.text.startsWith("Sunil Mittal")).value);
+  await page.getByLabel("Broker").selectOption(sunilVal);
   await page.waitForURL(/broker=/);
   await page.locator(".row", { hasText: "Urban Estate Sector 8" }).first().waitFor();
   await page.goto(`${BASE}/properties?status=sold`);
@@ -300,7 +301,9 @@ await step("tap '+ ₹' on commission list → add payment sheet", async () => {
 await step("outsider (logged in, not on team) is refused", async () => {
   await ctx.clearCookies();
   await login("outsider@sjp.test", "outsider-123");
-  await page.getByText("not allowed").waitFor();
+  await page.getByText("इस खाते को अनुमति नहीं है").waitFor(); // cookies cleared → Hindi default
+  const r = await page.request.get(`${BASE}/contacts`);
+  assert.ok(!(await r.text()).includes("Rajesh Garg"), "outsider must not see contact data");
 });
 
 await browser.close();

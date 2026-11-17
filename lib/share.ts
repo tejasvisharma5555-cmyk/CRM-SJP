@@ -41,7 +41,11 @@ export function buildShareMessage(card: PublicPropertyCard, opts: ShareOptions):
     ? `🏠 ${typeLabel} ${safe.purpose === "rent" ? "किराये पर" : "बिकाऊ"}`
     : `🏠 ${typeLabel} for ${purposeLabel}`);
   lines.push(`📍 ${[safe.locality, safe.city].filter(Boolean).join(", ")}`);
-  if (safe.plot_no) lines.push(hi ? `🔢 प्लॉट नं. ${safe.plot_no}` : `🔢 Plot No. ${safe.plot_no}`);
+  if (safe.plot_no) {
+    // "H.No. 77" / "SCO 12" already carry their own label
+    const labelled = /^[a-z]/i.test(safe.plot_no.trim());
+    lines.push(labelled ? `🔢 ${safe.plot_no}` : hi ? `🔢 प्लॉट नं. ${safe.plot_no}` : `🔢 Plot No. ${safe.plot_no}`);
+  }
   if (safe.size_value) {
     const size = Number(safe.size_value).toLocaleString("en-IN", { maximumFractionDigits: 2 });
     lines.push(`📐 ${size} ${t(`unit_${safe.size_unit}`)}`);

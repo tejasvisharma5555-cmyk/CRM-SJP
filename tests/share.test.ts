@@ -46,3 +46,9 @@ test("hindi message", () => {
   assert.match(m, /प्लॉट किराये पर/);
   assert.match(m, /₹15,000 \/ महीना/);
 });
+
+test("already-labelled numbers are not double-prefixed", () => {
+  const m = buildShareMessage({ ...card, plot_no: "H.No. 77" }, { lang: "en", includePlotNo: true });
+  assert.match(m, /🔢 H\.No\. 77/);
+  assert.doesNotMatch(m, /Plot No\. H\.No/);
+});

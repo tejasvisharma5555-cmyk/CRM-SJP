@@ -10,7 +10,11 @@
     "test": "node --test --experimental-strip-types tests/*.test.ts",
     "db:start": "supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime,mailpit,postgres-meta",
     "db:reset": "supabase db reset",
-    "seed": "node scripts/seed.mjs"
+    "seed": "node scripts/seed.mjs",
+    "test:e2e": "node tests/e2e/flows.mjs",
+    "test:rls": "node tests/e2e/rls.mjs",
+    "test:perf": "node tests/e2e/perf.mjs",
+    "add-user": "node scripts/add-user.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
