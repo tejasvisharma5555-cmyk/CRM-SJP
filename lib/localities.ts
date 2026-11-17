@@ -1,11 +1,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-/** Common Jind / Hisar localities, merged with whatever has been typed before. */
+/** Common Hisar (and nearby) localities, merged with whatever has been typed before. */
 const COMMON = [
-  "Urban Estate Sector 8", "Urban Estate Sector 9", "Urban Estate Sector 10", "Urban Estate Sector 11",
-  "Patiala Chowk", "Rohtak Road", "Gohana Road", "Safidon Road", "Hisar Road", "Bhiwani Road",
-  "Model Town", "Shiv Colony", "Ram Nagar", "Arban Estate", "Krishna Colony", "Dayanand Nagar",
-  "Sector 13", "Sector 14", "Sector 15", "Sector 16-17", "PLA", "Red Square Market",
+  // Hisar — HSVP / HUDA sectors
+  "Sector 1-4", "Sector 5", "Sector 9-11", "Sector 13", "Sector 14", "Sector 15", "Sector 16-17",
+  "Sector 33", "Urban Estate I", "Urban Estate II",
+  // Hisar — colonies & roads
+  "Model Town", "PLA", "Red Square Market", "Camp Chowk", "Patel Nagar", "Azad Nagar", "Ashok Vihar",
+  "Vidyut Nagar", "Jindal Chowk", "Rajgarh Road", "Delhi Road", "Sirsa Road", "Barwala Road",
+  "Tosham Road", "Satrod", "Dabra Chowk", "Mill Gate", "Auto Market",
+  // nearby
+  "Hansi", "Barwala", "Adampur", "Uklana",
 ];
 
 export async function getLocalities(sb: SupabaseClient): Promise<string[]> {

@@ -4,7 +4,7 @@ import { buildShareMessage } from "../lib/share.ts";
 import type { PublicPropertyCard } from "../lib/types.ts";
 
 const card: PublicPropertyCard = {
-  id: "x", property_type: "plot", purpose: "sale", city: "Jind", locality: "Urban Estate Sector 8",
+  id: "x", property_type: "plot", purpose: "sale", city: "Hisar", locality: "Sector 14",
   plot_no: "112-A", size_value: 200, size_unit: "gaj", price: 5600000, price_negotiable: true,
   status: "available", photo_paths: [], business_name: "SJP Properties", public_phone: "+919812000000",
 };
@@ -12,7 +12,7 @@ const card: PublicPropertyCard = {
 test("message contains public details and our number", () => {
   const m = buildShareMessage(card, { lang: "en", includePlotNo: false });
   assert.match(m, /Plot for Sale/);
-  assert.match(m, /Urban Estate Sector 8, Jind/);
+  assert.match(m, /Sector 14, Hisar/);
   assert.match(m, /200 Gaj/);
   assert.match(m, /₹56 Lakh \(negotiable\)/);
   assert.match(m, /98120 00000/);

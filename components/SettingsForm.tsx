@@ -18,7 +18,7 @@ export function SettingsForm({ initial, canEdit }: { initial: BusinessSettings; 
     const n = normalizeIndianPhone(phone);
     if (!n) { setMsg({ ok: false, text: t("invalidPhone") }); return; }
     const { error } = await supabaseBrowser().from("business_settings")
-      .update({ business_name: name.trim(), public_phone: n, default_city: city.trim() || "Jind" }).eq("id", true);
+      .update({ business_name: name.trim(), public_phone: n, default_city: city.trim() || "Hisar" }).eq("id", true);
     setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("saved") });
     router.refresh();
   }

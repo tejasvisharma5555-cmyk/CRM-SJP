@@ -175,7 +175,7 @@ export function PropertyForm({ initial, initialSource = null, initialOwner = nul
       <div className="field">
         <label className="f" htmlFor="p-loc">{t("locality")}</label>
         <input id="p-loc" className="input" list="localities" value={locality} autoComplete="off"
-          placeholder="Urban Estate Sector 8" onChange={(e) => setLocality(e.target.value)} />
+          placeholder="Sector 14" onChange={(e) => setLocality(e.target.value)} />
         <datalist id="localities">{localities.map((l) => <option key={l} value={l} />)}</datalist>
       </div>
 

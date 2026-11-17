@@ -1,6 +1,6 @@
 # SJP Property CRM
 
-Phone-first CRM for a one-person real-estate dealership (Jind / Hisar).
+Phone-first CRM for a one-person real-estate dealership in Hisar, Haryana.
 Next.js 15 + Supabase. Hindi / English.
 
 **Features:** contacts (owner / broker / buyer, several roles per person), listings with source
@@ -14,7 +14,7 @@ warnings, WhatsApp share built only from public fields, commissions with payment
 npm install
 npm run db:start        # local Supabase in Docker; applies supabase/migrations
 cp .env.example .env.local   # fill with the keys printed by db:start
-npm run seed            # Jind/Hisar test data (local only)
+npm run seed            # Hisar test data (local only)
 npm run build && npm start   # http://localhost:3000
 ```
 
@@ -28,7 +28,7 @@ Test logins after seeding: `admin@sjp.test / sjp-admin-123`, `staff@sjp.test / s
 3. Add the owner's login (this runs locally with the service-role key in `.env.local`):
    `node scripts/add-user.mjs papa@example.com 'StrongPassword' "Papa" admin`
 4. Set the business row once in the SQL editor:
-   `insert into business_settings (business_name, public_phone, default_city) values ('SJP Properties', '+91XXXXXXXXXX', 'Jind');`
+   `insert into business_settings (business_name, public_phone, default_city) values ('SJP Properties', '+91XXXXXXXXXX', 'Hisar');`
 5. Deploy to Vercel with `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
    Do **not** put the service-role key in Vercel.
 6. On the phone, open the site in Chrome → menu → "Add to Home screen".

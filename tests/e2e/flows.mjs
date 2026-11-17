@@ -107,7 +107,7 @@ await step("similar name in same area warns, then saves on confirm", async () =>
   await page.fill("#c-phone", "7015 551 234");
   await page.fill("#c-name", "Ramesh Kumaar");
   await page.getByRole("button", { name: "Owner" }).click();
-  await page.fill("#c-area", "urban estate");
+  await page.fill("#c-area", "sector 14");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByText("Similar name already in this area").waitFor();
   await page.locator(".alert.warn b", { hasText: "Ramesh Kumar" }).waitFor();
@@ -129,18 +129,18 @@ await step("contact page: Call + WhatsApp links, listings, commission summary", 
 });
 
 // ---------------- properties ----------------
-const { data: known } = await svc.from("properties").select("id").eq("plot_no", "112-A").eq("locality", "Urban Estate Sector 8").single();
+const { data: known } = await svc.from("properties").select("id").eq("plot_no", "112-A").eq("locality", "Sector 14").single();
 
 await step("duplicate listing warns; 'Same property' links 2nd broker to existing", async () => {
   await page.goto(`${BASE}/properties/new`);
   await page.getByRole("button", { name: /Broker/ }).first().click();
   await page.getByLabel("Given by").fill("sunil");
   await page.locator(".row .t1", { hasText: "Sunil Mittal" }).click();
-  await page.fill("#p-loc", "urban estate sector-8");
+  await page.fill("#p-loc", "sector-14");
   await page.fill("#p-plot", "112 A");
   await page.fill("#p-size", "200");
-  await page.fill("#p-price", "68 lakh");
-  await page.getByText("= ₹68 Lakh").waitFor();
+  await page.fill("#p-price", "1.3 cr");
+  await page.getByText("= ₹1.3 Cr").waitFor();
   await shot(page, "07-property-form");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByText("This may already be saved").waitFor();
@@ -163,12 +163,12 @@ await step("add property with inline NEW contact (direct owner); owner auto = so
   const sheet = page.getByRole("dialog");
   assert.equal(await sheet.locator("#c-phone").inputValue(), "89500 12345");
   await sheet.locator("#c-name").fill("Jai Bhagwan");
-  await sheet.locator("#c-area").fill("Ram Nagar");
+  await sheet.locator("#c-area").fill("Azad Nagar");
   await shot(page, "09-inline-contact");
   await sheet.getByRole("button", { name: "Save", exact: true }).click();
   await page.locator(".row .t1", { hasText: "✓ Jai Bhagwan" }).waitFor();
   await page.getByRole("button", { name: "House", exact: true }).click();
-  await page.fill("#p-loc", "Ram Nagar");
+  await page.fill("#p-loc", "Azad Nagar");
   await page.fill("#p-plot", "H.No. 77");
   await page.fill("#p-size", "150");
   await page.fill("#p-price", "41.5 lakh");
@@ -193,10 +193,10 @@ await step("'Different property' creates a separate listing", async () => {
   await page.getByRole("button", { name: /Broker/ }).first().click();
   await page.getByLabel("Given by").fill("deepak");
   await page.locator(".row .t1", { hasText: "Deepak Malik" }).click();
-  await page.fill("#p-loc", "Urban Estate Sector 8");
+  await page.fill("#p-loc", "Sector 14");
   await page.fill("#p-size", "1800");
   await page.getByRole("button", { name: "Sq ft" }).click();          // 1800 sq ft = 200 gaj
-  await page.fill("#p-price", "67 lakh");                              // within 5% of 68 L
+  await page.fill("#p-price", "128 lakh");                             // within 5% of 1.3 Cr
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByText("Same colony, same size, similar price").waitFor();
   await page.getByRole("button", { name: /Different property/ }).click();
@@ -233,7 +233,7 @@ await step("share message: only public fields; plot no. hidden until toggled", a
   for (const bad of ["Jai Bhagwan", "8950012345", "89500 12345", "SECRET", "Canada", "H.No. 77"]) {
     assert.ok(!text.includes(bad), `leaked "${bad}" in:\n${text}`);
   }
-  assert.match(text, /House/); assert.match(text, /Ram Nagar/); assert.match(text, /150/); assert.match(text, /41\.5/);
+  assert.match(text, /House/); assert.match(text, /Azad Nagar, Hisar/); assert.match(text, /150/); assert.match(text, /41\.5/);
   assert.match(text, /98765 00001/);
   await page.getByLabel("Show plot number").check();
   text = await preview.innerText();
@@ -252,7 +252,7 @@ await step("properties filters: source, broker, status", async () => {
   const sunilVal = await page.getByLabel("Broker").evaluate((sel) => [...sel.options].find((o) => o.text.startsWith("Sunil Mittal")).value);
   await page.getByLabel("Broker").selectOption(sunilVal);
   await page.waitForURL(/broker=/);
-  await page.locator(".row", { hasText: "Urban Estate Sector 8" }).first().waitFor();
+  await page.locator(".row", { hasText: "Sector 14" }).first().waitFor();
   await page.goto(`${BASE}/properties?status=sold`);
   const badges = await page.locator(".row .badge").allInnerTexts();
   assert.ok(badges.length > 0 && badges.every((b) => b === "Sold"));

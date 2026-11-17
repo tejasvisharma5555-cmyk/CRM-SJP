@@ -1,4 +1,4 @@
-// Seeds realistic Jind / Hisar test data. LOCAL ONLY unless --force.
+// Seeds realistic Hisar (Haryana) test data. LOCAL ONLY unless --force.
 //   npm run seed
 import { createClient } from "@supabase/supabase-js";
 import { loadEnv } from "./env.mjs";
@@ -38,31 +38,31 @@ must(await sb.from("team_members").insert([
   { user_id: admin.id, display_name: "Papa", role: "admin" },
   { user_id: staff.id, display_name: "Helper", role: "staff" },
 ]), "team");
-must(await sb.from("business_settings").insert({ business_name: "SJP Properties", public_phone: "+919876500001", default_city: "Jind" }), "settings");
+must(await sb.from("business_settings").insert({ business_name: "SJP Properties", public_phone: "+919876500001", default_city: "Hisar" }), "settings");
 
 // ---------- contacts ----------
 const BROKERS = [
-  ["Rajesh Garg", "Patiala Chowk"], ["Sunil Mittal", "Rohtak Road"], ["Vikas Goyal", "Urban Estate"],
-  ["Anil Saini", "Gohana Road"], ["Pawan Bansal", "Safidon Road"], ["Deepak Malik", "Model Town"],
-  ["Sandeep Redhu", "Hisar Road"], ["Naresh Jindal", "Shiv Colony"], ["Mukesh Dhull", "Narwana Road"],
-  ["Rohit Singla", "Sector 14"], ["Satbir Lather", "Uchana"], ["Kuldeep Nain", "PLA"],
+  ["Rajesh Garg", "Red Square Market"], ["Sunil Mittal", "Model Town"], ["Vikas Goyal", "Sector 14"],
+  ["Anil Saini", "Camp Chowk"], ["Pawan Bansal", "Patel Nagar"], ["Deepak Malik", "PLA"],
+  ["Sandeep Redhu", "Delhi Road"], ["Naresh Jindal", "Sector 15"], ["Mukesh Dhull", "Rajgarh Road"],
+  ["Rohit Singla", "Sector 13"], ["Satbir Lather", "Hansi"], ["Kuldeep Nain", "Barwala"],
 ];
 const OWNERS = [
-  ["Ramesh Kumar", "Urban Estate"], ["Suresh Chand", "Ram Nagar"], ["Om Prakash Sharma", "Model Town"],
-  ["Krishan Lal", "Shiv Colony"], ["Jagdish Sihag", "Pillukhera"], ["Balwan Singh", "Julana"],
-  ["Mahender Kundu", "Safidon Road"], ["Rajbir Dhanda", "Rohtak Road"], ["Sushila Devi", "Krishna Colony"],
-  ["Kamla Rani", "Dayanand Nagar"], ["Harish Arora", "Patiala Chowk"], ["Vinod Gupta", "Arban Estate"],
-  ["Ashok Jain", "Sector 13"], ["Dharambir Ahlawat", "Gohana Road"], ["Satish Kaushik", "Urban Estate"],
-  ["Rakesh Chahal", "Hisar Road"], ["Manoj Sangwan", "Sector 15"], ["Neelam Rani", "Ram Nagar"],
-  ["Yashpal Nehra", "Narwana"], ["Bhupender Sheoran", "Bhiwani Road"],
+  ["Ramesh Kumar", "Sector 14"], ["Suresh Chand", "Azad Nagar"], ["Om Prakash Sharma", "Model Town"],
+  ["Krishan Lal", "Patel Nagar"], ["Jagdish Sihag", "Satrod"], ["Balwan Singh", "Barwala"],
+  ["Mahender Kundu", "Sirsa Road"], ["Rajbir Dhanda", "Delhi Road"], ["Sushila Devi", "Ashok Vihar"],
+  ["Kamla Rani", "Vidyut Nagar"], ["Harish Arora", "Red Square Market"], ["Vinod Gupta", "Urban Estate II"],
+  ["Ashok Jain", "Sector 13"], ["Dharambir Ahlawat", "Tosham Road"], ["Satish Kaushik", "Sector 14"],
+  ["Rakesh Chahal", "Rajgarh Road"], ["Manoj Sangwan", "Sector 15"], ["Neelam Rani", "Azad Nagar"],
+  ["Yashpal Nehra", "Hansi"], ["Bhupender Sheoran", "Sector 9-11"],
 ];
 const BUYERS = [
-  ["Amit Verma", "Jind"], ["Pooja Sharma", "Jind"], ["Gaurav Mor", "Hisar"], ["Ritu Goel", "Jind"],
-  ["Sachin Lohan", "Jind"], ["Neeraj Punia", "Hisar"], ["Monika Rathi", "Jind"], ["Ajay Duhan", "Jind"],
+  ["Amit Verma", "Hisar"], ["Pooja Sharma", "Hisar"], ["Gaurav Mor", "Hisar"], ["Ritu Goel", "Hisar"],
+  ["Sachin Lohan", "Hansi"], ["Neeraj Punia", "Hisar"], ["Monika Rathi", "Hisar"], ["Ajay Duhan", "Hisar"],
 ];
 let phoneSeq = 0;
 const phone = () => `${pick(["98", "94", "99", "70", "81", "88"])}${String(12000000 + (phoneSeq++ * 7919) % 87000000).padStart(8, "0")}`;
-const cityFor = (area) => (["Sector 13", "Sector 14", "Sector 15", "PLA"].includes(area) ? "Hisar" : "Jind");
+const cityFor = (area) => (["Hansi", "Barwala"].includes(area) ? area : "Hisar");
 
 const contactRows = [
   ...BROKERS.map(([name, area], i) => ({ name, area, city: cityFor(area), roles: ["broker"], phone: phone(),
@@ -80,23 +80,23 @@ const owners = OWNERS.map(([n]) => byName[n]);
 const buyers = BUYERS.map(([n]) => byName[n]);
 
 // ---------- properties ----------
-const JIND = [
-  ["Urban Estate Sector 8", 30000, 42000], ["Urban Estate Sector 9", 28000, 38000], ["Urban Estate Sector 10", 27000, 36000],
-  ["Urban Estate Sector 11", 26000, 34000], ["Patiala Chowk", 22000, 32000], ["Rohtak Road", 18000, 28000],
-  ["Gohana Road", 14000, 22000], ["Safidon Road", 13000, 20000], ["Model Town", 24000, 33000],
-  ["Shiv Colony", 12000, 18000], ["Ram Nagar", 11000, 17000], ["Krishna Colony", 12000, 16000],
-  ["Dayanand Nagar", 13000, 19000], ["Arban Estate", 16000, 24000], ["Hisar Road", 15000, 23000],
+// [locality, min ₹/gaj, max ₹/gaj]
+const HISAR = [
+  ["Sector 13", 45000, 60000], ["Sector 14", 55000, 75000], ["Sector 15", 50000, 70000], ["Sector 16-17", 42000, 58000],
+  ["Sector 9-11", 35000, 48000], ["Sector 1-4", 32000, 45000], ["Urban Estate II", 40000, 55000], ["Sector 33", 28000, 38000],
+  ["PLA", 40000, 55000], ["Model Town", 38000, 52000], ["Patel Nagar", 22000, 32000], ["Azad Nagar", 18000, 26000],
+  ["Ashok Vihar", 20000, 28000], ["Vidyut Nagar", 26000, 36000], ["Rajgarh Road", 16000, 24000], ["Delhi Road", 18000, 28000],
+  ["Sirsa Road", 15000, 22000], ["Satrod", 12000, 18000], ["Tosham Road", 13000, 19000], ["Camp Chowk", 30000, 42000],
 ];
-const HISAR = [["Sector 13", 35000, 48000], ["Sector 14", 40000, 55000], ["Sector 15", 38000, 52000], ["PLA", 30000, 42000]];
+const NEARBY = [["Hansi", "Model Town Hansi", 14000, 22000], ["Barwala", "Barwala Main Road", 10000, 16000]];
 const round = (n, to) => Math.round(n / to) * to;
 
 const props = [];
 function addProp(p) { props.push(p); return p; }
 
 for (let i = 0; i < 58; i++) {
-  const hisar = i % 7 === 0;
-  const [locality, lo, hi] = pick(hisar ? HISAR : JIND);
-  const city = hisar ? "Hisar" : "Jind";
+  const nearby = i % 9 === 0;
+  const [city, locality, lo, hi] = nearby ? pick(NEARBY) : ["Hisar", ...pick(HISAR)];
   const kind = rnd();
   const viaBroker = rnd() < 0.6;
   const src = viaBroker ? pick(brokers) : pick(owners);
@@ -115,7 +115,7 @@ for (let i = 0; i < 58; i++) {
   } else if (kind < 0.9) {
     const acres = pick([1, 2, 2.5, 4, 5]);
     p = { property_type: "agri_land", size_value: acres, size_unit: pick(["acre", "killa"]), price: round(acres * between(3500000, 6000000), 100000), plot_no: null };
-    p.locality_override = pick(["Village Pillukhera", "Village Julana", "Uchana Kalan", "Village Bibipur", "Narwana Road"]);
+    p.locality_override = pick(["Village Ladwa", "Village Mirzapur", "Village Dhansu", "Village Talwandi Rana", "Village Kaimri"]);
   } else {
     const marla = pick([5, 8, 10, 12]);
     p = { property_type: "plot", size_value: marla, size_unit: "marla", price: round(marla * 30.25 * between(lo, hi), 50000), plot_no: String(between(1, 400)) };
@@ -137,12 +137,12 @@ for (let i = 0; i < 58; i++) {
     notes: rnd() < 0.2 ? pick(["Owner will accept 5% less", "Registry pending — check papers", "Keys with neighbour", "Bank loan on property"]) : null,
   });
 }
-// A known plot the dup-check demo can hit: Urban Estate Sector 8, plot 112-A, 200 gaj, ₹68 lakh
+// A known plot the dup-check demo can hit: Sector 14 Hisar, plot 112-A, 200 gaj, ₹1.3 crore
 addProp({
-  property_type: "plot", purpose: "sale", status: "available", city: "Jind", locality: "Urban Estate Sector 8",
-  plot_no: "112-A", size_value: 200, size_unit: "gaj", price: 6800000, price_negotiable: true, facing: "East", road_width_ft: 30,
+  property_type: "plot", purpose: "sale", status: "available", city: "Hisar", locality: "Sector 14",
+  plot_no: "112-A", size_value: 200, size_unit: "gaj", price: 13000000, price_negotiable: true, facing: "East", road_width_ft: 30,
   listing_source: "broker", source_contact_id: byName["Vikas Goyal"].id, owner_contact_id: byName["Ramesh Kumar"].id,
-  received_date: daysAgo(12), notes: "Owner Ramesh ji wants 66 L final",
+  received_date: daysAgo(12), notes: "Owner Ramesh ji wants 1.27 Cr final",
 });
 for (const p of props) delete p.locality_override;
 const inserted = must(await sb.from("properties").insert(props).select("id, status, price, listing_source, source_contact_id, received_date, plot_no"), "properties");
