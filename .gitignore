@@ -1,0 +1,8 @@
+node_modules
+.next
+.env*.local
+next-env.d.ts
+*.tsbuildinfo
+supabase/.branches
+supabase/.temp
+tests/e2e/last-run.txt
